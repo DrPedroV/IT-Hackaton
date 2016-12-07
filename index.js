@@ -37,6 +37,8 @@ app.post('/webhook/', function (req, res) {
 			if (text === 'Generic') {
 				sendGenericMessage(sender)
 				continue
+			} else if (text === 'Funky') {
+                sendFunkyMessage(sender)
 			}
 			sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
 		}
@@ -72,6 +74,31 @@ function sendTextMessage(sender, text) {
 			console.log('Error: ', response.body.error)
 		}
 	})
+}
+
+function sendFunkyMessage(sender) {
+    let messageData = {
+        "attachement": {
+            "type": "template",
+            "payload": {
+                "template_type": "button",
+                "text": "The POWER of node.js in Messenger",
+                "buttons": [
+                    {
+                        "type": "postback",
+                        "title": "Show OneBlade",
+                        "payload": "Payload content"
+                    },
+                    {
+                        "type": "web_url",
+                        "title": "Show OneBlade Product Page",
+                        "url": "http://www.philips.co.uk/c-m-pe/oneblade-face-style-and-shave",
+                        "webview_height_ratio": "compact"
+                    }
+                ]
+            }
+        }
+    }
 }
 
 function sendGenericMessage(sender) {
