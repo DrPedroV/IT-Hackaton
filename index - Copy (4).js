@@ -38,9 +38,6 @@ function trainClassifier() {
     classifier.addDocument('issues', 'help');
     classifier.addDocument('help', 'help');
     classifier.addDocument('problem', 'help');
-    classifier.addDocument('fail', 'help');
-    classifier.addDocument('failure', 'help');
-    classifier.addDocument('does not work', 'help');
     classifier.addDocument('Shavers', 'shavers');
     classifier.addDocument('shavers', 'shavers');
     classifier.addDocument('Generic', 'generic');
@@ -56,18 +53,8 @@ function trainClassifier() {
     classifier.addDocument('looking', 'new');
     classifier.addDocument('feeding', 'feeding');
     classifier.addDocument('monitoring', 'monitoring');
-    classifier.addDocument('details', 'details');
-    classifier.addDocument('ProductFeeding', 'ProductFeeding');
-    classifier.addDocument('ProductMonitoring', 'ProductMonitoring');
-    classifier.addDocument('smart', 'smart');
-    classifier.addDocument('sub-category', 'sub-category');
-    classifier.addDocument('informationonsmart', 'informationonsmart');
-    classifier.addDocument('MAC1', 'smartyes');
-    classifier.addDocument('Strong', 'smartyes');
-    classifier.addDocument('Green', 'green');
-    classifier.addDocument('yes', 'yes');
-    classifier.addDocument('end', 'end');
-    classifier.addDocument('no', 'no');
+    classifier.addDocument('Product Feeding', 'Product Feeding');
+    classifier.addDocument('Product Monitoring', 'Product Monitoring');
     classifier.train();
 }
 
@@ -119,8 +106,7 @@ function classifyText(sender, classify, text) {
                     let split = body.split(':')
                     name = split[1].replace("}", "")
                     name2 = name.replace(/\"/g, "")
-                    sendTextMessage(sender, "Hi " + name2 + ", Welcome to Philips Consumer Care.  My name is Mac. How can I help you ?");
-                    //sendImageMessage(sender);
+                    sendTextMessage(sender, "Hi " + name2 + ", Welcome to Philips Consumer Care.  How can I help you ?");
                     //console.log() 
                 }
             });
@@ -157,38 +143,11 @@ function classifyText(sender, classify, text) {
         case 'monitoring':
             sendProductsMonitoringMenu(sender);
             break;
-       // case 'ProductFeeding':
-       //     sendProductsfeedingdetailsMenu(sender);
-       //     break;
-        case 'ProductMonitoring':
-            sendProductsMonitoringMenu(sender);
-            break;
-        case 'details':
+        case 'Product Feeding':
             sendProductsfeedingdetailsMenu(sender);
             break;
-        case 'smart':
-            sendhelpissuesMenu(sender);
-            break;
-        case 'sub-category':
-            sendhelpissuesmonitoringsubcategoriesMenu(sender);
-            break;
-        case 'informationonsmart':
-            sendsmartcategoryquestionsMenu(sender, "");
-            break;
-        case 'smartyes':
-            sendsmartcategoryquestionsMenu(sender, classify);
-            break;
-        case 'green':
-            sendsmartcategoryquestionsMenu(sender, classify);
-            break;
-        case 'yes':
-            sendsmartcategoryquestionsMenu(sender, classify);
-            break;
-        case 'no':
-            sendsmartcategoryquestionsMenu(sender, classify);
-            break;
-        case 'end':
-            sendImageMessage(sender);
+        case 'Product Monitoring':
+            sendProductsMonitoringMenu(sender);
             break;
         case 'error':
             sendTextMessage(sender, "I did not understand your request ?");
@@ -268,24 +227,6 @@ function sendNewMenu(sender) {
             }
         }
     }
-
-    let name = ""
-    let name2 = ""
-
-    let url = "https://graph.facebook.com/v2.6/" + sender + "?fields=first_name&access_token=EAAYepm9TRtoBAENBBsfcbW23T0Qh5yTYRA03QFZCLFLxu1aZBePST1i5X6GxrZAR8WSrRU7gLzjs1RpQF9CAIAO2JcZBDZA9QvktqS2CVF9TDpC5XLv5EnOo3U33P0KB4HzokMbWRu0FgRib7P5ZCnqdCcZCBo4YNZAtZA8bVE8pm6AZDZD"
-
-    request(url, function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-            let xbody = JSON.stringify(body)
-            let split = body.split(':')
-            name = split[1].replace("}", "")
-            name2 = name.replace(/\"/g, "")
-            sendTextMessage(sender, "Thank you for your interest " + name2 + ", Please have a look at our product lines");
-            //console.log() 
-        }
-    });
-
-    //sendTextMessage(sender, "So " + name2 + ", Please have a look at our product lines");
 
     request({
         url: 'https://graph.facebook.com/v2.8/me/messages',
@@ -443,7 +384,7 @@ function sendFeedingProductsMenu(sender) {
                         "title": "Buy"
                     }, {
                         "type": "postback",
-                        "title": "Show all products",
+                        "title": "Details of product",
                         "payload": "Details",
                     }
 
@@ -463,22 +404,6 @@ function sendFeedingProductsMenu(sender) {
             }
         }
     }
-
-    let name = ""
-    let name2 = ""
-
-    let url = "https://graph.facebook.com/v2.6/" + sender + "?fields=first_name&access_token=EAAYepm9TRtoBAENBBsfcbW23T0Qh5yTYRA03QFZCLFLxu1aZBePST1i5X6GxrZAR8WSrRU7gLzjs1RpQF9CAIAO2JcZBDZA9QvktqS2CVF9TDpC5XLv5EnOo3U33P0KB4HzokMbWRu0FgRib7P5ZCnqdCcZCBo4YNZAtZA8bVE8pm6AZDZD"
-
-    request(url, function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-            let xbody = JSON.stringify(body)
-            let split = body.split(':')
-            name = split[1].replace("}", "")
-            name2 = name.replace(/\"/g, "")
-            sendTextMessage(sender, "Oh very nice " + name2 + ". These are our feeding products of today.  What are you most interested in ?");
-            //console.log() 
-        }
-    });
 
     request({
         url: 'https://graph.facebook.com/v2.8/me/messages',
@@ -511,11 +436,9 @@ function sendHelpMenu(sender) {
                     "subtitle": "",
                     "image_url": "https://media.coindesk.com/uploads/2014/04/shutterstock_17561926-300x185.jpg",
                     "buttons": [{
-                        "type": "web_url",
-                        "url": "https://www.philips.co.uk/myphilips/login?resource=%2Fmyphilips%2Fregister-product.html%3Fctn%3DSCD860%2F05%26loc%3Den_GB%26cl%3Dpdp#tab=log-in"
-,
-                        "webview_height_ratio": "compact",
-                        "title": "Product Replacement"
+                        "type": "postback",
+                        "title": "Click",
+                        "payload": "replacement",
                     }],
                 }, {
                     "title": "Product Malfunctioning",
@@ -523,30 +446,14 @@ function sendHelpMenu(sender) {
                     "image_url": "http://www.counseloroffices.net/wp-content/uploads/2015/04/Chicago-Product-Liability-Attorney.jpg",
                     "buttons": [{
                         "type": "postback",
-                        "title": "Help to solve issues",
-                        "payload": "smart",
+                        "title": "Click",
+                        "payload": "information",
                     }],
                 }]
             }
         }
     }
 
-    let name = ""
-    let name2 = ""
-
-    let url = "https://graph.facebook.com/v2.6/" + sender + "?fields=first_name&access_token=EAAYepm9TRtoBAENBBsfcbW23T0Qh5yTYRA03QFZCLFLxu1aZBePST1i5X6GxrZAR8WSrRU7gLzjs1RpQF9CAIAO2JcZBDZA9QvktqS2CVF9TDpC5XLv5EnOo3U33P0KB4HzokMbWRu0FgRib7P5ZCnqdCcZCBo4YNZAtZA8bVE8pm6AZDZD"
-
-    request(url, function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-            let xbody = JSON.stringify(body)
-            let split = body.split(':')
-            name = split[1].replace("}", "")
-            name2 = name.replace(/\"/g, "")
-            sendTextMessage(sender, "Sorry to hear " + name2 + ". Can you let me know what kind of issue you have ?");
-            //console.log() 
-        }
-    });
-                
     request({
         url: 'https://graph.facebook.com/v2.8/me/messages',
         qs: { access_token: token },
@@ -564,222 +471,6 @@ function sendHelpMenu(sender) {
     })
 
 }
-
-// new function for product malfunctioning 
-function sendhelpissuesMenu(sender) {
-    let messageData = {
-        "attachment": {
-            "type": "template",
-            "payload": {
-                "template_type": "generic",
-                "elements": [{
-                    "title": "Feeding",
-                    "subtitle": "Coming soon...",
-                    //"image_url": "https://media.coindesk.com/uploads/2014/04/shutterstock_17561926-300x185.jpg",
-                    "buttons": [{
-                        "type": "postback",
-                        "title": "Coming soon",
-                        "payload": "XXX",
-                    }],
-                }, {
-                    "title": "Monitoring",
-                    "subtitle": "Product Help",
-                    //"image_url": "http://www.counseloroffices.net/wp-content/uploads/2015/04/Chicago-Product-Liability-Attorney.jpg",
-                    "buttons": [{
-                        "type": "postback",
-                        "title": "Show categories",
-                        "payload": "sub-category",
-                    }],
-                },
-                                                                {
-                                                                    "title": "Accessories",
-                                                                    "subtitle": "Coming soon...",
-                                                                    //"image_url": "http://www.counseloroffices.net/wp-content/uploads/2015/04/Chicago-Product-Liability-Attorney.jpg",
-                                                                    "buttons": [{
-                                                                        "type": "postback",
-                                                                        "title": "Coming soon...",
-                                                                        "payload": "XXX",
-                                                                    }],
-                                                                }]
-            }
-        }
-    }
-
-    sendTextMessage(sender, "Please make a selection of te below categories");
-
-    request({
-        url: 'https://graph.facebook.com/v2.8/me/messages',
-        qs: { access_token: token },
-        method: 'POST',
-        json: {
-            recipient: { id: sender },
-            message: messageData,
-        }
-    }, function (error, response, body) {
-        if (error) {
-            console.log('Error sending messages: ', error)
-        } else if (response.body.error) {
-            console.log('Error: ', response.body.error)
-        }
-    })
-}
-
-    // new function for product malfunctioning monitoring subcategories
-    function sendhelpissuesmonitoringsubcategoriesMenu(sender) {
-        let messageData = {
-            "attachment": {
-                "type": "template",
-                "payload": {
-                    "template_type": "generic",
-                    "elements": [{
-                        "title": "Smart baby monitors",
-                        "subtitle": "Product help",
-                        //"image_url": "https://media.coindesk.com/uploads/2014/04/shutterstock_17561926-300x185.jpg",
-                        "buttons": [{
-                            "type": "postback",
-                            "title": "Initiate assistance",
-                            "payload": "informationonsmart",
-                        }],
-                    }, {
-                        "title": "others",
-                        "subtitle": "product help",
-                        //"image_url": "http://www.counseloroffices.net/wp-content/uploads/2015/04/Chicago-Product-Liability-Attorney.jpg",
-                        "buttons": [{
-                            "type": "postback",
-                            "title": "Coming soon...",
-                            "payload": "Coming soon...",
-                        }],
-                        }
-                    ]
-                }
-            }
-        }
-
-        sendTextMessage(sender, "Please make a selection of the below categories");
-                
-        request({
-            url: 'https://graph.facebook.com/v2.8/me/messages',
-            qs: { access_token: token },
-            method: 'POST',
-            json: {
-                recipient: { id: sender },
-                message: messageData,
-            }
-        }, function (error, response, body) {
-            if (error) {
-                console.log('Error sending messages: ', error)
-            } else if (response.body.error) {
-                console.log('Error: ', response.body.error)
-            }
-        })
-
-    }
-
-
-    // new function for product malfunctioning monitoring subcategories
-    function sendsmartcategoryquestionsMenu(sender, check) {
-        let messageData = "";
-        if (check === "") {
-            messageData = {
-                "text": "What is the strength of your current Wifi signal?",
-                "quick_replies": [
-                    {
-                        "content_type": "text",
-                        "title": "Strong",
-                        "payload": "MAC1"
-                    },
-                    {
-                        "content_type": "text",
-                        "title": "Weak",
-                        "payload": "Weak"
-                    }
-                ]
-
-
-            }
-        }
-        else if (check === "smartyes") {
-            messageData = {
-                "text": "Whats the color on your Wifi light on your monitor ?",
-                "quick_replies": [
-                    {
-                        "content_type": "text",
-                        "title": "Red",
-                        "payload": "Red"
-                    },
-                    {
-                        "content_type": "text",
-                        "title": "Green",
-                        "payload": "Green"
-                    }
-                ]
-
-
-            }
-        }
-        else if (check === "green") {
-            messageData = {
-                "text": "Are more then 3 people using the app ? ?",
-                "quick_replies": [
-                    {
-                        "content_type": "text",
-                        "title": "Yes",
-                        "payload": "yes"
-                    },
-                    {
-                        "content_type": "text",
-                        "title": "No",
-                        "payload": "no"
-                    }
-                ]
-
-
-            }
-        }
-        else if (check === "yes") {
-            let text = "We have identified the issue.  Please login as an administrator and de-activate the others." 
-            messageData = { text: text }
-        }
-        else if (check === "no") {
-            messageData = {
-                "attachment": {
-                    "type": "template",
-                    "payload": {
-                        "template_type": "generic",
-                        "elements": [{
-                            "title": "Call REAL person",
-                            "subtitle": "Support officer",
-                            //"image_url": "https://media.coindesk.com/uploads/2014/04/shutterstock_17561926-300x185.jpg",
-                            "buttons": [{
-                                "type": "phone_number",
-                                "title": "Call Representative",
-                                "payload": "+31621918786",
-                            }],
-                        }
-                        ]
-                    }
-                }
-            }
-        }
-
-        request({
-            url: 'https://graph.facebook.com/v2.8/me/messages',
-            qs: { access_token: token },
-            method: 'POST',
-            json: {
-                recipient: { id: sender },
-                message: messageData,
-            }
-        }, function (error, response, body) {
-            if (error) {
-                console.log('Error sending messages: ', error)
-            } else if (response.body.error) {
-                console.log('Error: ', response.body.error)
-            }
-        })
-    }
-
-
 
 function sendProductsfeedingMenu(sender) {
     let messageData = {
@@ -798,7 +489,7 @@ function sendProductsfeedingMenu(sender) {
                         "title": "Buy"
                     }, {
                         "type": "postback",
-                        "title": "Show all products",
+                        "title": "Details of product",
                         "payload": "Details",
                     }
 
@@ -909,12 +600,12 @@ function sendTextMessage(sender, text) {
 	})
 }
 
-function sendImageMessage(sender) {
+function sendImageMessage(sender, text) {
     let messageData = {
         "attachment": {
             "type": "image",
             "payload": {
-                "url": "http://dedoornenburger.nl/wp-content/uploads/applaus-300x200.jpg"
+                "url": "https://lh3.googleusercontent.com/rMY-8mgwwqt1uPbHA3tLDJ900LhAFye5VpFc8bdMSKaiBinug9Zx6rz84CTLmCKIrSkEVVP5EI2dIN51PGdk5O89bmyF_EiI_fZHC2YDllQ7uTReWzEO2PTLqLImG6y3VNidIZvVkTzzQuDGpkAcprMdYW0fyophggF5eOrowOzbyqryMmcJXyNbvHIQ1SuvE7evru3OsMlOAgXiXSdcEjJjD5dIQa8DXdS8MLXSp1eD8Gq6g2q3fbNnLVX5VJR5yS-uLbudfLpvUC2BMed7Ez1yYMjy2gKIPbCXhQXkvOYQ3LdcsUvMZM0eVLVQrAZn4u0_dgAT-KJp-MBQvz0ApENvYMtatqJLdup8dRLFNg1LlWVTsp2aI8gtgQebAMeZRfKQHd2eQB0f9WCiAXdaZ9feB8BmKG_OiuYXxPLDyAVYy68oixnPEZR9mXdtvZf3kllz9mTgP6ctI5BQvsOsCW34PEm_fkgWsoD3j0AHfVVLU2uTpXTK_Sj6l4z7u5dkt-cGvP1kCBLrLYYWtd0CzDQUPF97pNi1Sw4c_F34OF2mW1ZmJ7ZL6vJtXadmGDZnYN_-yBwywfuUVvLinEJUkjgfpe1-0K4fkvoNByK44dXJqF4kS3nO=s400-no"
             }
         }
     }
