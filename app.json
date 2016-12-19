@@ -1,0 +1,20 @@
+{
+  "name": "IT-Hackaton",
+  "scripts": {
+  },
+  "env": {
+    "FB_PAGE_ACCESS_TOKEN": {
+      "required": true
+    }
+  },
+  "formation": {
+  },
+  "addons": [
+
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ]
+}
