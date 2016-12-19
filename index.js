@@ -35,6 +35,7 @@ function trainClassifier() {
     // classifier.retrain();
     classifier.addDocument('hello', 'welcome');
     classifier.addDocument('hi', 'welcome');
+    classifier.addDocument('Hoi', 'welcome');
     classifier.addDocument('issues', 'help');
     classifier.addDocument('help', 'help');
     classifier.addDocument('problem', 'help');
